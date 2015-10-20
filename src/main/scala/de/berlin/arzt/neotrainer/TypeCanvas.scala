@@ -1,7 +1,7 @@
 package de.berlin.arzt.neotrainer
 
-import java.util.concurrent.{Executors, ExecutorService}
-import javafx.beans.property.{SimpleDoubleProperty, DoubleProperty}
+import java.util.concurrent.Executors
+import javafx.beans.property.{DoubleProperty, SimpleDoubleProperty}
 import javafx.geometry.Bounds
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.KeyEvent
@@ -150,30 +150,37 @@ class TypeCanvas {
 
   def processKeyEvent(e: KeyEvent, provider: CharProvider) {
     if (e.getEventType eq KeyEvent.KEY_TYPED) {
+      //println(s"Key Event: $e")
       val character: String = e.getCharacter
+      val code = e.getCode
+      val text = e.getText
+      //println(s"Character: '$character' (Length: ${character.length}}), Code: $code, Text: $text")
       if (character.length == 1) {
-        var c: Char = character.charAt(0)
+        val c = character.charAt(0)
         if (c == right(0) && wrong.length == 0) {
           pool.execute(hitPerMinuteRunnable)
           provider.reward(c)
-          c = provider.getNextChar
+          val nextC = provider.getNextChar
           val cOld: Char = right(0)
-          right.append(c)
+          right.append(nextC)
           if (left.length > 0) {
             left.append(cOld)
           }
           shiftOffset += lastWidth
-        }
-        else {
+        } else {
           if (c == TypeCanvas.BACKSPACE) {
             if (wrong.length > 0) {
               wrong.deleteCharAt(wrong.length - 1)
             }
-          }
-          else {
-            wrong.append(c)
+          } else {
+            //wrong.append(c)
+            wrong += c
             provider.penalize(right(0))
           }
+        }
+      } else if (character.length == 0) {
+        if (wrong.length > 0) {
+          wrong.deleteCharAt(wrong.length - 1)
         }
       }
     }

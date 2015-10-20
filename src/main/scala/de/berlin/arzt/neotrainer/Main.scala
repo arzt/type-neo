@@ -7,9 +7,9 @@ import javafx.event.{ActionEvent, EventHandler}
 import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.canvas.{Canvas, GraphicsContext}
-import javafx.scene.control.{Button, CheckBox, RadioButton, ToggleGroup}
+import javafx.scene.control.{CheckBox, RadioButton, ToggleGroup}
 import javafx.scene.input.{KeyEvent, MouseEvent}
-import javafx.scene.layout.{FlowPane, BorderPane, GridPane, HBox}
+import javafx.scene.layout.{BorderPane, GridPane, HBox}
 import javafx.stage.{Stage, WindowEvent}
 
 object Main {
@@ -111,7 +111,8 @@ class Main extends Application {
     canvas.heightProperty.bind(s.heightProperty)
     typeDrawer.widthProperty.bind(s.widthProperty)
     typeDrawer.heightProperty.bind(s.heightProperty)
-    s.addEventFilter(KeyEvent.ANY, new EventHandler[KeyEvent] {
+
+    s.addEventHandler(KeyEvent.ANY, new EventHandler[KeyEvent] {
       def handle(event: KeyEvent): Unit = {
         filterKeyPressedEvent(event)
       }

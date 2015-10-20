@@ -26,14 +26,14 @@ class DefaultCharProvider(chars: Iterable[Char]) extends CharProvider {
   def penalize(c: Char) {
     charSource.muliply(c, 2)
     charSource.uniformize(0.05)
-    System.out.println("Penalized: " + c)
-    System.out.println(charSource)
+    //System.out.println("Penalized: " + c)
+    //System.out.println(charSource)
   }
 
   def reward(c: Char) {
     charSource.muliply(c, 0.8)
     charSource.uniformize(0.05)
-    System.out.println("Rewarded: " + c)
-    System.out.println(charSource)
+    //System.out.println("Rewarded: " + c)
+    //System.out.println(charSource)
   }
 }
