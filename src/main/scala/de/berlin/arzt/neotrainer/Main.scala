@@ -65,10 +65,8 @@ class Main extends Application {
     controlDictionary.setToggleGroup(group)
     controlRandom.setToggleGroup(group)
     val group2: ToggleGroup = new ToggleGroup
-    val handler: EventHandler[ActionEvent] = new EventHandler[ActionEvent] {
-      def handle(event: ActionEvent) {
-        handleInputs(event)
-      }
+    val handler: EventHandler[ActionEvent] = (event: ActionEvent) => {
+      handleInputs(event)
     }
 
     class DictEventHandler(name: String) extends EventHandler[ActionEvent] {
@@ -112,12 +110,7 @@ class Main extends Application {
     typeDrawer.widthProperty.bind(s.widthProperty)
     typeDrawer.heightProperty.bind(s.heightProperty)
 
-    s.addEventHandler(KeyEvent.ANY, new EventHandler[KeyEvent] {
-      def handle(event: KeyEvent): Unit = {
-        filterKeyPressedEvent(event)
-      }
-    }
-    )
+    s.addEventHandler(KeyEvent.ANY, filterKeyPressedEvent)
     timer = new AnimationTimer() {
       def handle(now: Long) {
         typeDrawer.paintComponent(now, context)
@@ -128,16 +121,10 @@ class Main extends Application {
     primaryStage.setScene(s)
     primaryStage.show
     Platform.setImplicitExit(true)
-    primaryStage.setOnCloseRequest(
-      new EventHandler[WindowEvent] {
-        def handle(e: WindowEvent) {
-          handleExit
-        }
-      }
-    )
+    primaryStage.setOnCloseRequest(handleExit)
   }
 
-  def handleExit {
+  def handleExit(e: WindowEvent) {
     timer.stop
     typeDrawer.shutdownPool
   }
