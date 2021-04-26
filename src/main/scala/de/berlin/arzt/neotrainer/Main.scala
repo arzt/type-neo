@@ -13,9 +13,6 @@ import javafx.scene.layout.{BorderPane, GridPane, HBox}
 import javafx.stage.{Stage, WindowEvent}
 
 object Main {
-  private val resGermanDict: String = "/de/berlin/arzt/neotype/dict/german"
-  private val resEnglishDict: String = "/de/berlin/arzt/neotype/dict/english"
-
   def main(args: Array[String]) {
     Application.launch(classOf[Main], args: _*)
   }
@@ -32,42 +29,38 @@ class Main extends Application {
   var controlSpecialIII = new CheckBox("Special III")
   var controlDictionaries: Iterable[RadioButton] = List.empty[RadioButton]
   var checkBoxEnabled: Option[CheckBox] = None
-  var checkBoxDisabled: CheckBox = null
+  var checkBoxDisabled: CheckBox = _
   var vb1 = new HBox
   var vb2 = new HBox
-  var germanDict: Path = null
-  var englishDict: Path = null
-  var timer: AnimationTimer = null
-  var typeDrawer: TypeCanvas = null
-  var context: GraphicsContext = null
+  var germanDict: Path = _
+  var englishDict: Path = _
+  var timer: AnimationTimer = _
+  var typeDrawer: TypeCanvas = _
+  var context: GraphicsContext = _
   var provider: Option[CharProvider] = None
   var dictionaries: Option[Map[String, Set[String]]] = None
 
-  import collection.JavaConversions._
+  import collection.JavaConverters._
 
   def start(primaryStage: Stage) {
     val p: Path = Paths.get(System.getProperty("user.home"), ".config", "type-neo")
-    val p2: Path = Files.createDirectories(p)
-    val f = Files.list(p2).iterator().toStream.view
-    val v = f.view
+    Files.createDirectories(p)
 
-    primaryStage.setTitle("TipeWryte")
+    primaryStage.setTitle("Type Neo!")
     val canvas: Canvas = new Canvas
     context = canvas.getGraphicsContext2D
     typeDrawer = new TypeCanvas
     vb1.setSpacing(10)
     vb2.setSpacing(10)
     vb1.getChildren.addAll(controlLowercase, controlUppercase, controlNumbers, controlSpecialI, controlSpecialII, controlSpecialIII)
-    vb2.getChildren.addAll(controlDictionaries)
+    vb2.getChildren.addAll(controlDictionaries.asJavaCollection)
+
     controlDictionary.setSelected(true)
     controlDictionaries.headOption.foreach(_.setSelected(true))
-    val group: ToggleGroup = new ToggleGroup
+    val group: ToggleGroup = new ToggleGroup()
     controlDictionary.setToggleGroup(group)
     controlRandom.setToggleGroup(group)
-    val group2: ToggleGroup = new ToggleGroup
-    val handler: EventHandler[ActionEvent] = (event: ActionEvent) => {
-      handleInputs(event)
-    }
+    val group2: ToggleGroup = new ToggleGroup()
 
     class DictEventHandler(name: String) extends EventHandler[ActionEvent] {
       def handle(event: ActionEvent): Unit = {
@@ -81,19 +74,19 @@ class Main extends Application {
     }
     controlDictionaries.foreach { control =>
       control.setToggleGroup(group2)
-      control.setOnAction(handler)
+      control.setOnAction(handleInputs)
     }
 
-    controlLowercase.setOnAction(handler)
+    controlLowercase.setOnAction(handleInputs)
     controlLowercase.setSelected(true)
-    controlUppercase.setOnAction(handler)
-    controlNumbers.setOnAction(handler)
-    controlSpecialI.setOnAction(handler)
-    controlSpecialII.setOnAction(handler)
-    controlSpecialIII.setOnAction(handler)
-    controlDictionary.setOnAction(handler)
-    controlRandom.setOnAction(handler)
-    val grid: GridPane = new GridPane
+    controlUppercase.setOnAction(handleInputs)
+    controlNumbers.setOnAction(handleInputs)
+    controlSpecialI.setOnAction(handleInputs)
+    controlSpecialII.setOnAction(handleInputs)
+    controlSpecialIII.setOnAction(handleInputs)
+    controlDictionary.setOnAction(handleInputs)
+    controlRandom.setOnAction(handleInputs)
+    val grid: GridPane = new GridPane()
     grid.setHgap(30)
     grid.setVgap(30)
     grid.setPadding(new Insets(40))
@@ -101,7 +94,7 @@ class Main extends Application {
     grid.add(vb1, 1, 0)
     grid.add(controlDictionary, 0, 1)
     grid.add(vb2, 1, 1)
-    val pane: BorderPane = new BorderPane
+    val pane: BorderPane = new BorderPane()
     pane.setCenter(canvas)
     pane.setTop(grid)
     val s: Scene = new Scene(pane, 1200, 800)
@@ -116,16 +109,16 @@ class Main extends Application {
         typeDrawer.paintComponent(now, context)
       }
     }
-    timer.start
+    timer.start()
     handleInputs(null)
     primaryStage.setScene(s)
-    primaryStage.show
+    primaryStage.show()
     Platform.setImplicitExit(true)
     primaryStage.setOnCloseRequest(handleExit)
   }
 
   def handleExit(e: WindowEvent) {
-    timer.stop
+    timer.stop()
     typeDrawer.shutdownPool
   }
 
@@ -182,16 +175,12 @@ class Main extends Application {
     }
   }
 
-  def handleMouseEvent(event: MouseEvent) {
-    System.out.println("test: " + event.getX + "," + event.getY + ", " + event.getZ)
-  }
-
   def filterKeyPressedEvent(event: KeyEvent) {
-    if (event.getEventType eq KeyEvent.KEY_TYPED) {
+    if (event.getEventType.eq(KeyEvent.KEY_TYPED)) {
       for (p <- provider) {
         typeDrawer.processKeyEvent(event, p)
       }
     }
-    event.consume
+    event.consume()
   }
 }
