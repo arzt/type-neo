@@ -14,16 +14,7 @@ object TypeCanvas {
 
 class TypeCanvas {
   var width: DoubleProperty = new SimpleDoubleProperty(0)
-  var heigt: DoubleProperty = new SimpleDoubleProperty(0)
-
-  def widthProperty: DoubleProperty = {
-    return width
-  }
-
-  def heightProperty: DoubleProperty = {
-    return heigt
-  }
-
+  var height: DoubleProperty = new SimpleDoubleProperty(0)
   var hitsPerMinute: Int = 0
   var maxHitsPerMinute: Int = 0
   var fps: Int = 0
@@ -61,7 +52,7 @@ class TypeCanvas {
 
   def paintComponent(now: Long, g: GraphicsContext) {
     val width: Double = this.width.get
-    val height: Double = this.heigt.get
+    val height: Double = this.height.get
     g.clearRect(0, 0, width, height)
     val unit: Double = width
     yOffset = height / 2.0

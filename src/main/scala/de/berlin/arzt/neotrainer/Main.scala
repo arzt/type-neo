@@ -100,8 +100,8 @@ class Main extends Application {
     val s: Scene = new Scene(pane, 1200, 800)
     canvas.widthProperty.bind(s.widthProperty)
     canvas.heightProperty.bind(s.heightProperty)
-    typeDrawer.widthProperty.bind(s.widthProperty)
-    typeDrawer.heightProperty.bind(s.heightProperty)
+    typeDrawer.width.bind(s.widthProperty)
+    typeDrawer.height.bind(s.heightProperty)
 
     s.addEventHandler(KeyEvent.ANY, filterKeyPressedEvent)
     timer = new AnimationTimer() {
