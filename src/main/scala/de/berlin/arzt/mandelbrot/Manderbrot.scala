@@ -2,31 +2,6 @@ package de.berlin.arzt.mandelbrot
 
 import scala.annotation.tailrec
 
-class Mandelbrot(width: Int, height: Int, maxIter: Int = 600) {
-  val i = new Array[Int](width * height)
-
-  def index(x: Int, y: Int): Int = y * width + x
-
-  def compute(xOffset: Double, yOffset: Double, step: Double): Unit = {
-    var x = 0
-    var y = 0
-    while (y < height) {
-      while (x < width) {
-        val xTrans = xOffset + x * step
-        val yTrans = yOffset + y * step
-        val mandel = Mandelbrot.mandelbrot(xTrans, yTrans, maxIter)
-        i(index(x, y)) = mandel
-        x += 1
-      }
-      y += 1
-      x = 0
-    }
-  }
-
-  def get(x: Int, y: Int): Int = i(index(x, y))
-
-}
-
 object Mandelbrot {
 
   def len(a: Double, b: Double): Double = a * a + b * b
