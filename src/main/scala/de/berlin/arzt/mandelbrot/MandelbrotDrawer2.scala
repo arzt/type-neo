@@ -53,7 +53,7 @@ class MandelbrotDrawer2(width: Int, height: Int, maxIter: Int = 600, callback: (
     }
 
     if (abort()) {
-      println(f"aborted! ${x},${y}")
+      //println(f"aborted! ${x},${y}")
     }
   }
 

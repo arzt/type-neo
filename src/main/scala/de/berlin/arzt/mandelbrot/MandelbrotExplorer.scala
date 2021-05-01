@@ -42,7 +42,6 @@ class MandelbrotExplorer extends Application {
 
     def step(): Unit = {
       val step = 1.0 / math.pow(2, zoom)
-      println(f"step: ${step}")
       abort = false
       def task(xStart: Double, yStart: Double, xEnd: Double, yEnd: Double): Runnable =
         () => {
