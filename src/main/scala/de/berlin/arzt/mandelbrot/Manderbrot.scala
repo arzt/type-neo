@@ -66,23 +66,4 @@ object Mandelbrot {
     mandelbrotRec(0, 0, 0)
   }
 
-  def mandelbrotCallback(a: Double, b: Double, maxIter: Int = 1000): Int = {
-    @tailrec def mandelbrotRec(
-                                za: Double,
-                                zb: Double,
-                                i: Int
-                              ): Int = {
-      if (len(za, zb) > 4 || i >= maxIter) {
-        maxIter - i
-      } else {
-        val pa = za + a
-        val pb = zb + b
-        val sa = squareRe(pa, pb)
-        val sb = squareIm(pa, pb)
-        mandelbrotRec(sa, sb, i + 1)
-      }
-    }
-    mandelbrotRec(0, 0, 0)
-  }
-
 }
