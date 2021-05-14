@@ -4,7 +4,8 @@ lazy val root = (project in file(".")).
     version := "0.0.1",
     scalaVersion := "2.12.13",
     libraryDependencies ++= Seq(
-      "org.openjfx" % "javafx-controls" % "16"
+      "org.openjfx" % "javafx-controls" % "16",
+      "org.scalatest" %% "scalatest" % "3.2.8" % Test
     )
   )
 
